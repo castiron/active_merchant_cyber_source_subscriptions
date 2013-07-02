@@ -262,7 +262,7 @@ module ActiveMerchant #:nodoc:
       def build_create_subscription_request(creditcard, options)
         xml = Builder::XmlMarkup.new :indent => 2
         add_address(xml, options[:billing_address], options)
-        add_address(xml, options[:shipping_address], options, true)
+        add_address(xml, options[:shipping_address], options, true) unless options[:shipping_address].empty?
         add_purchase_data(xml, options[:subscription][:amount], options[:setup_fee], options)
         add_creditcard(xml, creditcard)
         add_subscription(xml, options)
