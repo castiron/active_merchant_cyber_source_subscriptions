@@ -436,7 +436,7 @@ module ActiveMerchant #:nodoc:
 
       def add_subscription(xml, options)
         xml.tag! 'recurringSubscriptionInfo' do
-          xml.tag! 'subscriptionID',    options[:subscription][:subscription_id]
+          xml.tag! 'subscriptionID',    options[:subscription][:subscription_id] if options[:subscription][:subscription_id]
           xml.tag! 'status',            options[:subscription][:status] if options[:subscription][:status]
           xml.tag! 'amount',            options[:subscription][:amount] if options[:subscription][:amount]
           xml.tag! 'numberOfPayments',  options[:subscription][:occurrences] if options[:subscription][:occurrences]
@@ -444,7 +444,7 @@ module ActiveMerchant #:nodoc:
           xml.tag! 'frequency',         options[:subscription][:frequency] if options[:subscription][:frequency]
           xml.tag! 'startDate',         options[:subscription][:start_date].strftime("%Y%m%d") if options[:subscription][:start_date]
           xml.tag! 'endDate',           options[:subscription][:end_date].strftime("%Y%m%d")   if options[:subscription][:end_date]
-          xml.tag! 'approvalRequired',  options[:subscription][:approval_required] || false
+          xml.tag! 'approvalRequired',  (options[:subscription][:approval_required] || false) if options[:subscription][:approval_required].present?
           xml.tag! 'event',             options[:subscription][:event] if options[:subscription][:event]
           xml.tag! 'billPayment',       options[:subscription][:bill_payment] if options[:subscription][:bill_payment]
         end
