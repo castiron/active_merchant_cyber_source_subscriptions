@@ -132,15 +132,9 @@ module ActiveMerchant #:nodoc:
         commit(build_credit_request(money, identification, options), options)
       end
 
-      def store(payment_method, options = {})
-        requires!(options, :subscription, :order_id, :email)
-        setup_address_hash(options)
-        commit(build_create_subscription_request(payment_method, options), options)
-      end
-
       def create_subscription(creditcard, options = {})
         requires!(options, :subscription, :billing_address, :order_id, :email)
-        requires!(options[:subscription], [:frequency, "on-demand", "weekly", "bi-weekly", "semi-monthly", "quarterly", "quad-weekly", "semi-annually", "annually"],:start_date, :occurrences, :auto_renew)
+        requires!(options[:subscription], [:frequency, "on-demand", "weekly", "bi-weekly", "semi-monthly", "quarterly", "quad-weekly", "semi-annually", "annually"])
         requires!(options[:billing_address], :first_name, :last_name)
         setup_address_hash(options)
         commit(build_create_subscription_request(creditcard, options), options)
