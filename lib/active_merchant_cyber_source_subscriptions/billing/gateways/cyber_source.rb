@@ -273,9 +273,8 @@ module ActiveMerchant #:nodoc:
       end
 
       def build_update_subscription_request(identification, options)
-        reference_code, subscription_id, request_token = identification.split(";")
         options[:subscription] ||= {}
-        options[:subscription][:subscription_id] = subscription_id
+        options[:subscription][:subscription_id] = identification
 
         xml = Builder::XmlMarkup.new :indent => 2
         add_address(xml, options[:billing_address], options) unless options[:billing_address].empty?
@@ -289,9 +288,8 @@ module ActiveMerchant #:nodoc:
       end
 
      def build_retrieve_subscription_request(identification, options)
-       reference_code, subscription_id, request_token = identification.split(";")
         options[:subscription] ||= {}
-        options[:subscription][:subscription_id] = subscription_id
+        options[:subscription][:subscription_id] = identification
         xml = Builder::XmlMarkup.new :indent => 2
         add_subscription(xml, options)
         add_subscription_retrieve_service(xml, options)
@@ -299,9 +297,8 @@ module ActiveMerchant #:nodoc:
      end
 
      def build_subscription_authorization_request(money, identification, options)
-        reference_code, subscription_id, request_token = identification.split(";")
         options[:subscription] ||= {}
-        options[:subscription][:subscription_id] = subscription_id
+        options[:subscription][:subscription_id] = identification
 
         xml = Builder::XmlMarkup.new :indent => 2
         add_purchase_data(xml, money, true, options)
@@ -312,9 +309,8 @@ module ActiveMerchant #:nodoc:
       end
 
       def build_subscription_purchase_request(money, identification, options)
-        reference_code, subscription_id, request_token = identification.split(";")
         options[:subscription] ||= {}
-        options[:subscription][:subscription_id] = subscription_id
+        options[:subscription][:subscription_id] = identification
 
         xml = Builder::XmlMarkup.new :indent => 2
         add_purchase_data(xml, money, true, options)
