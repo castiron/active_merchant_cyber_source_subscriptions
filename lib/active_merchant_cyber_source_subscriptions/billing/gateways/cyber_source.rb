@@ -231,7 +231,7 @@ module ActiveMerchant #:nodoc:
       def build_purchase_request(money, creditcard, options)
         xml = Builder::XmlMarkup.new :indent => 2
         add_address(xml, options[:billing_address], options)
-  add_address(xml, options[:shipping_address], options, true) if options[:shipping_address]
+        add_address(xml, options[:shipping_address], options, true) if options[:shipping_address]
         add_purchase_data(xml, money, true, options)
         add_creditcard(xml, creditcard)
         add_purchase_service(xml, options)
@@ -287,16 +287,16 @@ module ActiveMerchant #:nodoc:
         xml.target!
       end
 
-     def build_retrieve_subscription_request(identification, options)
+      def build_retrieve_subscription_request(identification, options)
         options[:subscription] ||= {}
         options[:subscription][:subscription_id] = identification
         xml = Builder::XmlMarkup.new :indent => 2
         add_subscription(xml, options)
         add_subscription_retrieve_service(xml, options)
         xml.target!
-     end
+      end
 
-     def build_subscription_authorization_request(money, identification, options)
+      def build_subscription_authorization_request(money, identification, options)
         options[:subscription] ||= {}
         options[:subscription][:subscription_id] = identification
 
@@ -352,8 +352,8 @@ module ActiveMerchant #:nodoc:
       def add_purchase_data(xml, money = 0, include_grand_total = false, options={})
         xml.tag! 'purchaseTotals' do
           xml.tag! 'currency', options[:currency] || currency(money)
-    money == 0 ? xml.tag!('grandTotalAmount','0.0') : xml.tag!('grandTotalAmount', amount(money)) if include_grand_total
-  end
+          money == 0 ? xml.tag!('grandTotalAmount', '0.0') : xml.tag!('grandTotalAmount', amount(money)) if include_grand_total
+        end
       end
 
       def add_address(xml, address, options, shipTo = false)
@@ -405,7 +405,7 @@ module ActiveMerchant #:nodoc:
 
       def add_purchase_service(xml, options)
         xml.tag! 'ccAuthService', {'run' => 'true'}
-  xml.tag! 'ccCaptureService', {'run' => 'true'}
+        xml.tag! 'ccCaptureService', {'run' => 'true'}
       end
 
       def add_void_service(xml, request_id, request_token)
@@ -428,12 +428,12 @@ module ActiveMerchant #:nodoc:
       end
 
       def add_subscription_update_service(xml, options)
-  add_auth_service(xml) if options[:setup_fee]
-  xml.tag! 'paySubscriptionUpdateService', {'run' => 'true'}
+        add_auth_service(xml) if options[:setup_fee]
+        xml.tag! 'paySubscriptionUpdateService', {'run' => 'true'}
       end
 
       def add_subscription_retrieve_service(xml, options)
-  xml.tag! 'paySubscriptionRetrieveService', {'run' => 'true'}
+        xml.tag! 'paySubscriptionRetrieveService', {'run' => 'true'}
       end
 
       def add_subscription(xml, options)
