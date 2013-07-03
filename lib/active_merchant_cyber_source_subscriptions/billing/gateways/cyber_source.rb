@@ -132,6 +132,12 @@ module ActiveMerchant #:nodoc:
         commit(build_credit_request(money, identification, options), options)
       end
 
+      def store(payment_method, options = {})
+        requires!(options, :subscription, :order_id, :email)
+        setup_address_hash(options)
+        commit(build_create_subscription_request(payment_method, options), options)
+      end
+
       def create_subscription(creditcard, options = {})
         requires!(options, :subscription, :billing_address, :order_id, :email)
         requires!(options[:subscription], [:frequency, "on-demand", "weekly", "bi-weekly", "semi-monthly", "quarterly", "quad-weekly", "semi-annually", "annually"],:start_date, :occurrences, :auto_renew)
@@ -265,6 +271,7 @@ module ActiveMerchant #:nodoc:
         add_address(xml, options[:shipping_address], options, true) unless options[:shipping_address].empty?
         add_purchase_data(xml, options[:subscription][:amount], options[:setup_fee], options)
         add_creditcard(xml, creditcard)
+        add_subsciption_payment_method(xml, creditcard, options)
         add_subscription(xml, options)
         add_subscription_create_service(xml, options)
         add_business_rules_data(xml)
@@ -369,7 +376,12 @@ module ActiveMerchant #:nodoc:
           xml.tag! 'state', address[:state]
           xml.tag! 'postalCode', address[:zip]
           xml.tag! 'country', address[:country]
+          if address[:phone_number]
+            raise StandardError, 'Phone numbers can only have spaces, dashes, or periods.' if /[^0-9 \-\.]/.match(address[:phone_number])
+            xml.tag! 'phoneNumber', address[:phone_number]
+          end
           xml.tag! 'email', options[:email]
+          xml.tag! 'customerID', address[:customer_id] if address[:customer_id]
         end
       end
 
@@ -447,6 +459,13 @@ module ActiveMerchant #:nodoc:
           xml.tag! 'approvalRequired',  (options[:subscription][:approval_required] || false) if options[:subscription][:approval_required].present?
           xml.tag! 'event',             options[:subscription][:event] if options[:subscription][:event]
           xml.tag! 'billPayment',       options[:subscription][:bill_payment] if options[:subscription][:bill_payment]
+        end
+      end
+
+      def add_subsciption_payment_method(xml, payment_method, options)
+        xml.tag! 'subscription' do
+          xml.tag! 'title', options[:subscription][:title] if options[:subscription][:title]
+          xml.tag! 'paymentMethod', card_brand(payment_method) == 'check' ? 'check' : 'credit card'
         end
       end
 
