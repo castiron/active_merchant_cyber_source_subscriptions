@@ -367,7 +367,7 @@ module ActiveMerchant #:nodoc:
           xml.tag! 'postalCode', address[:zip]
           xml.tag! 'country', address[:country]
           if address[:phone_number]
-            raise StandardError, 'Phone numbers can only have spaces, dashes, or periods.' if /[^0-9 \-\.]/.match(address[:phone_number])
+            #raise StandardError, 'Phone numbers can only have spaces, dashes, or periods.' if /[^0-9 \-\.]/.match(address[:phone_number])
             xml.tag! 'phoneNumber', address[:phone_number]
           end
           xml.tag! 'email', options[:email]
@@ -484,7 +484,13 @@ module ActiveMerchant #:nodoc:
 
       # Contact CyberSource, make the SOAP request, and parse the reply into a Response object
       def commit(request, options)
-        response = parse(ssl_post(test? ? TEST_URL : LIVE_URL, build_request(request, options)))
+        built_request = build_request(request, options)
+        puts '--- start.'
+        puts built_request
+        puts '---'
+        response = parse(ssl_post(test? ? TEST_URL : LIVE_URL, built_request))
+        puts response
+        puts '--- done.'
 
         success = response[:decision] == "ACCEPT"
         message = @@response_codes[('r' + response[:reasonCode]).to_sym] rescue response[:message]
