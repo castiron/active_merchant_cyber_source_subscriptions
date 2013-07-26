@@ -5,9 +5,9 @@ Gem::Specification.new do |s|
   s.name          = 'active_merchant_cyber_source_subscriptions'
   s.version       = ActiveMerchantCyberSourceSubscriptions::VERSION
   s.platform      = Gem::Platform::RUBY
-  s.authors       = ['Donald Ball']
-  s.email         = ['donald.ball@gmail.com']
-  s.homepage      = 'http://github.com/Decisiv/active_merchant_cyber_source_subscriptions/'
+  s.authors       = ['Donald Ball (originally)', 'Peter Soots (forked version)']
+  s.email         = ['donald.ball@gmail.com', 'peter@castironcoding.com']
+  s.homepage      = 'https://github.com/castiron/active_merchant_cyber_source_subscriptions'
   s.summary       = 'Replaces the cyber source gateway with one capable of subscriptions.'
   s.description   = 'Replaces the cyber source gateway with one capable of subscriptions.'
   s.files         = `git ls-files`.split("\n") - ["active_merchant_cyber_source_subscriptions.gemspec"]
