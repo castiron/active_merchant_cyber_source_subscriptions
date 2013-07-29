@@ -44,7 +44,7 @@ module ActiveMerchant #:nodoc:
         :r200 => "The authorization request was approved by the issuing bank but declined by CyberSource because it did not pass the AVS check",
         :r201 => "The issuing bank has questions about the request",
         :r202 => "Expired card",
-        :r203 => "General decline of the card",
+        :r203 => "General decline of the card. Transaction may be too large. Please contact us for more details.",
         :r204 => "Insufficient funds in the account",
         :r205 => "Stolen or lost card",
         :r207 => "Issuing bank unavailable",
